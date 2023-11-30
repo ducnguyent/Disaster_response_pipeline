@@ -1,5 +1,7 @@
 # Disaster Response Pipeline Project
-This project will include a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data.
+This project will include a web app where an emergency worker can input a new message and get classification results in several categories.
+The project aims to create an API model designed to categorize emergency messages related to disasters. This model will be integrated into a web application, enabling emergency responders to input a new message. The API will then generate classification results across multiple categories such as "water," "shelter," "food," and more. This categorization helps in understanding the type of assistance required based on the nature of the message.
+The web app will also display visualizations of the data.
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.

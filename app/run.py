@@ -38,30 +38,76 @@ model = joblib.load("../models/classifier.pkl")
 @app.route('/index')
 def index():
     
-    # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
-    
-    # create visuals
-    # TODO: Below is an example - modify to create your own visuals
+    # Extracting necessary data for visuals
+    genre_message_counts = df.groupby('genre').count()['message']
+    genre_names = list(genre_message_counts.index)
+
+    # Genre-wise 'aid_related' status
+    aid_related_1 = df[df['aid_related'] == 1].groupby('genre').count()['message']
+    aid_related_0 = df[df['aid_related'] == 0].groupby('genre').count()['message']
+    genre_names_aid = list(aid_related_1.index)
+
+    # Calculating distribution of classes with value 1
+    class_distribution_1 = df.drop(['id', 'message', 'original', 'genre'], axis=1).sum() / len(df)
+
+    # Sorting values in descending order
+    class_distribution_1 = class_distribution_1.sort_values(ascending=False)
+
+    # Series of values that have 0 in classes
+    class_distribution_0 = (class_distribution_1 - 1) * -1
+    class_names = list(class_distribution_1.index)
+
+    # Creating visuals
     graphs = [
         {
             'data': [
                 Bar(
-                    x=genre_names,
-                    y=genre_counts
+                    x=genre_names_aid,
+                    y=aid_related_1,
+                    name='Aid Related'
+                ),
+                Bar(
+                    x=genre_names_aid,
+                    y=aid_related_0,
+                    name='Not Aid Related'
                 )
             ],
-
             'layout': {
-                'title': 'Distribution of Message Genres',
+                'title': 'Distribution of messages by genre and \'aid related\' class',
                 'yaxis': {
                     'title': "Count"
                 },
                 'xaxis': {
                     'title': "Genre"
-                }
+                },
+                'barmode': 'group'
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=class_names,
+                    y=class_distribution_1,
+                    name='Class = 1'
+                ),
+                Bar(
+                    x=class_names,
+                    y=class_distribution_0,
+                    name='Class = 0',
+                    marker=dict(
+                        color='rgb(212, 224, 217)'
+                    )
+                )
+            ],
+            'layout': {
+                'title': 'Distribution of labels within classes',
+                'yaxis': {
+                    'title': "Distribution"
+                },
+                'xaxis': {
+                    'title': "Class",
+                },
+                'barmode': 'stack'
             }
         }
     ]
