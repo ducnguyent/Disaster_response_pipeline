@@ -4,8 +4,7 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
-    """
-    Load data from 2 CSV files and merge them together.
+    """Load data from 2 CSV files and merge them together.
 
     Args:
         messages_filepath (str): Messages CSV data filepath.
@@ -24,8 +23,7 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
-    """
-    Clean data and keep useful features.
+    """Clean data and keep useful features.
 
     Args:
         df (DataFrame): Data need to be cleaned.
@@ -66,8 +64,7 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
-    """
-    Save data into sqlite database.
+    """Save data into sqlite database.
 
     Args:
         df (DataFrame): Data need to be saved.
